@@ -1,0 +1,7 @@
+<module>
+  <inherits name="org.slf4j.SLF4J"/>
+  <inherits name="com.google.gwt.logging.Logging"/>
+
+  <source path=""/>
+
+</module>
