@@ -1,3 +1,5 @@
+![GWT3/J2CL compatible](https://img.shields.io/badge/GWT3/J2CL-compatible-brightgreen.svg)
+
 # domino-slf4j-logger
 Enable using slf4j loggers inside GWT client side code, which increase code portability to the JVM where the slf4j logging is preferred.
 
