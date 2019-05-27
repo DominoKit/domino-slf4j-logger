@@ -3,6 +3,8 @@
 # domino-slf4j-logger
 Enable using slf4j loggers inside GWT client side code, which increase code portability to the JVM where the slf4j logging is preferred.
 
+> Still needs some work to make sure the logs can be optimized by gwt compiler.
+
 ### Maven dependencies
 
 ```
