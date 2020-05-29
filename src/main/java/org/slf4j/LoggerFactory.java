@@ -24,6 +24,7 @@
 package org.slf4j;
 
 import org.dominokit.domino.logger.GWTLoggerAdapter;
+import org.dominokit.domino.logger.NOPLoggerAdapter;
 
 /**
  * <p/>
@@ -50,7 +51,11 @@ public class LoggerFactory {
      * @return logger
      */
     public static Logger getLogger(String name) {
-        return new GWTLoggerAdapter(name);
+        if("false".equalsIgnoreCase(System.getProperty("gwt.logging.enabled"))){
+            return new NOPLoggerAdapter(name);
+        }else {
+            return new GWTLoggerAdapter(name);
+        }
     }
 
     /**

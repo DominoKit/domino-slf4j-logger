@@ -4,10 +4,13 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.dominokit</groupId>
     <artifactId>domino-slf4j-logger</artifactId>
-    <version>1.0-rc.4-SNAPSHOT</version>
+    <version>1.0.0</version>
     
     <packaging>gwt-lib</packaging>
     <name>domino-slf4j-logger</name>
+
+    <url>https://github.com/domino-slf4j-logger</url>
+    <description>provide implementation for using slf4j in gwt client code</description>
 
     <licenses>
         <license>
@@ -28,7 +31,7 @@
     </developers>
 
     <issueManagement>
-        <url>https://github.com/DominoKit/domino-events/issues</url>
+        <url>https://github.com/DominoKit/domino-slf4j-logger/issues</url>
         <system>GitHub Issues</system>
     </issueManagement>
 
@@ -49,16 +52,6 @@
         <repository>
             <id>sonatype-snapshots-repo</id>
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-            <snapshots>
-                <enabled>true</enabled>
-                <updatePolicy>always</updatePolicy>
-                <checksumPolicy>fail</checksumPolicy>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>vertispan-snapshots</id>
-            <name>Vertispan Snapshots</name>
-            <url>https://repo.vertispan.com/gwt-snapshot/</url>
             <snapshots>
                 <enabled>true</enabled>
                 <updatePolicy>always</updatePolicy>
@@ -87,6 +80,7 @@
             <version>3.7.0</version>
             <scope>test</scope>
         </dependency>
+<!--        this should be added back once it is fixed in j2cl: https://github.com/Vertispan/j2clmavenplugin/issues/36 -->
 <!--        <dependency>-->
 <!--            <groupId>org.slf4j</groupId>-->
 <!--            <artifactId>slf4j-api</artifactId>-->
@@ -104,10 +98,37 @@
             <plugin>
                 <groupId>net.ltgt.gwt.maven</groupId>
                 <artifactId>gwt-maven-plugin</artifactId>
+                <version>1.0.0</version>
                 <extensions>true</extensions>
                 <configuration>
                     <moduleName>org.dominokit.domino.logger.Logging</moduleName>
                     <moduleShortName>dominologging</moduleShortName>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.amashchenko.maven.plugin</groupId>
+                <artifactId>gitflow-maven-plugin</artifactId>
+                <version>1.14.0</version>
+                <configuration>
+                    <!-- Set to true to immediately bump the development version when creating a release branch -->
+                    <commitDevelopmentVersionAtStart>true</commitDevelopmentVersionAtStart>
+
+                    <!-- Which digit to increas in major.minor.patch versioning, the values being 0.1.2 respectively.
+                         By default the rightmost number is increased.
+                         Pass in the number via parameter or profile to allow configuration,
+                         since everything set in the file can't be overwritten via command line -->
+                    <versionDigitToIncrement>${bump.digit}</versionDigitToIncrement>
+
+                    <!-- Execute mvn verify before release -->
+                    <preReleaseGoals>verify</preReleaseGoals>
+                    <preHotfixGoals>verify</preHotfixGoals>
+
+                    <!-- Configure branches -->
+                    <gitFlowConfig>
+                        <productionBranch>master</productionBranch>
+                        <!-- default is develop, but we use development -->
+                        <developmentBranch>development</developmentBranch>
+                    </gitFlowConfig>
                 </configuration>
             </plugin>
         </plugins>
@@ -150,9 +171,6 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-gpg-plugin</artifactId>
                     <version>1.6</version>
-                    <configuration>
-                        <skip>true</skip>
-                    </configuration>
                     <executions>
                         <execution>
                             <id>sign-artifacts</id>
@@ -160,6 +178,13 @@
                             <goals>
                                 <goal>sign</goal>
                             </goals>
+                            <configuration>
+                                <!-- Prevent `gpg` from using pinentry programs -->
+                                <gpgArguments>
+                                    <arg>--pinentry-mode</arg>
+                                    <arg>loopback</arg>
+                                </gpgArguments>
+                            </configuration>
                         </execution>
                     </executions>
                 </plugin>
@@ -198,14 +223,6 @@
         </profile>
         <profile>
             <id>production</id>
-            <properties>
-                <gpg.executable>gpg</gpg.executable>
-                <gpg.keyname>${env.GPG_KEYNAME}</gpg.keyname>
-                <gpg.passphrase>${env.GPG_PASSPHRASE}</gpg.passphrase>
-                <gpg.defaultKeyring>false</gpg.defaultKeyring>
-                <gpg.publicKeyring>${env.GPG_DIR}/pubring.gpg</gpg.publicKeyring>
-                <gpg.secretKeyring>${env.GPG_DIR}/secring.gpg</gpg.secretKeyring>
-            </properties>
             <activation>
                 <property>
                     <name>ci</name>

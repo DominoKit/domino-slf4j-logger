@@ -11,7 +11,7 @@ Enable using slf4j loggers inside GWT client side code, which increase code port
 <dependency>
     <groupId>org.dominokit</groupId>
     <artifactId>domino-slf4j-logger</artifactId>
-    <version>1.0-rc.4-SNAPSHOT</version>
+    <version>1.0.0</version>
 </dependency>
 ```
 
