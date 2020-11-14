@@ -16,7 +16,6 @@
 package org.dominokit.domino.logger;
 
 import static elemental2.dom.DomGlobal.*;
-import static java.util.Objects.isNull;
 
 import java.util.function.Consumer;
 import org.slf4j.helpers.FormattingTuple;
@@ -36,10 +35,7 @@ public class ConsoleLoggerAdapter extends MarkerIgnoringBase {
   private static final boolean DEBUG_ENABLED;
 
   static {
-    String level =
-        isNull(System.getProperty("domino.slf4j.logging.level"))
-            ? "INFO"
-            : System.getProperty("domino.slf4j.logging.level");
+    String level = System.getProperty("domino.slf4j.logging.level", "INFO");
     if (level != "INFO"
         && level != "WARN"
         && level != "DEBUG"
@@ -70,38 +66,42 @@ public class ConsoleLoggerAdapter extends MarkerIgnoringBase {
     return TRACE_ENABLED;
   }
 
+  /**
+   * We are using debug instead of trace here because trace would also print a stack trace from where it was called.
+   * check https://developer.mozilla.org/en-US/docs/Web/API/Console#Stack_traces
+   */
   @Override
   public void trace(String msg) {
     if (TRACE_ENABLED) {
-      console.trace(msg);
+      console.debug(msg);
     }
   }
 
   @Override
   public void trace(String format, Object arg) {
     if (TRACE_ENABLED) {
-      formatAndLog(ft -> console.trace(ft.getMessage(), ft.getThrowable()), format, arg);
+      formatAndLog(ft -> console.debug(ft.getMessage(), ft.getThrowable()), format, arg);
     }
   }
 
   @Override
   public void trace(String format, Object arg1, Object arg2) {
     if (TRACE_ENABLED) {
-      formatAndLog(ft -> console.trace(ft.getMessage(), ft.getThrowable()), format, arg1, arg2);
+      formatAndLog(ft -> console.debug(ft.getMessage(), ft.getThrowable()), format, arg1, arg2);
     }
   }
 
   @Override
   public void trace(String format, Object... argArray) {
     if (TRACE_ENABLED) {
-      formatAndLog(ft -> console.trace(ft.getMessage(), ft.getThrowable()), format, argArray);
+      formatAndLog(ft -> console.debug(ft.getMessage(), ft.getThrowable()), format, argArray);
     }
   }
 
   @Override
   public void trace(String msg, Throwable t) {
     if (TRACE_ENABLED) {
-      formatAndLog(ft -> console.trace(ft.getMessage(), ft.getThrowable()), msg, t);
+      formatAndLog(ft -> console.debug(ft.getMessage(), ft.getThrowable()), msg, t);
     }
   }
 
