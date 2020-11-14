@@ -37,6 +37,8 @@ private static final Logger LOGGER = LoggerFactory.getLogger(App.class);
 LOGGER.info("I cann use SLF4J logger in gwt client side code.");
 ```
 
-### Disable logging
+### Logging level
 
-To disable the logging set the system property `gwt.logging.enabled` to false in your build tool.
+Use the following system property to controle the log level
+
+`domino.slf4j.logging.level` possible values are `OFF`, `INFO`, `WARN`, `DEBUG`, `ERROR`, `TRACE`  default is `INFO`.
