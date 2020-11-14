@@ -37,5 +37,6 @@ private static final Logger LOGGER = LoggerFactory.getLogger(App.class);
 LOGGER.info("I cann use SLF4J logger in gwt client side code.");
 ```
 
+### Disable logging
 
-
+To disable the logging set the system property `gwt.logging.enabled` to false in your build tool.
