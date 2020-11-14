@@ -67,8 +67,9 @@ public class ConsoleLoggerAdapter extends MarkerIgnoringBase {
   }
 
   /**
-   * We are using debug instead of trace here because trace would also print a stack trace from where it was called.
-   * check https://developer.mozilla.org/en-US/docs/Web/API/Console#Stack_traces
+   * We are using debug instead of trace here because trace would also print a stack trace from
+   * where it was called. check
+   * https://developer.mozilla.org/en-US/docs/Web/API/Console#Stack_traces
    */
   @Override
   public void trace(String msg) {
