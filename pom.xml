@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.dominokit</groupId>
     <artifactId>domino-slf4j-logger</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.1-levels-SNAPSHOT</version>
 
     <packaging>gwt-lib</packaging>
 
@@ -96,6 +96,16 @@
             <artifactId>slf4j-api</artifactId>
             <version>1.7.30</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.elemental2</groupId>
+            <artifactId>elemental2-core</artifactId>
+            <version>1.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.elemental2</groupId>
+            <artifactId>elemental2-dom</artifactId>
+            <version>1.1.0</version>
         </dependency>
     </dependencies>
     <build>

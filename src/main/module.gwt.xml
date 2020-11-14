@@ -16,9 +16,13 @@
 
 -->
 <module>
-  <inherits name="org.slf4j.SLF4J"/>
-  <inherits name="com.google.gwt.logging.Logging"/>
+    <inherits name="org.slf4j.SLF4J"/>
+    <inherits name="elemental2.core.Core"/>
+    <inherits name="elemental2.dom.Dom"/>
 
-  <source path=""/>
+    <define-property name="domino.slf4j.logging.level" values="INFO,WARN,DEBUG,TRACE,ERROR,OFF"/>
+    <set-property name="domino.slf4j.logging.level" value="INFO"/>
+
+    <source path=""/>
 
 </module>

@@ -18,8 +18,7 @@
  */
 package org.slf4j;
 
-import org.dominokit.domino.logger.GWTLoggerAdapter;
-import org.dominokit.domino.logger.NOPLoggerAdapter;
+import org.dominokit.domino.logger.ConsoleLoggerAdapter;
 
 /**
  * <code>LoggerFactory</code> is essentially a wrapper around an {@link ILoggerFactory} instance
@@ -43,11 +42,7 @@ public class LoggerFactory {
    * @return logger
    */
   public static Logger getLogger(String name) {
-    if ("false".equalsIgnoreCase(System.getProperty("gwt.logging.enabled"))) {
-      return new NOPLoggerAdapter(name);
-    } else {
-      return new GWTLoggerAdapter(name);
-    }
+    return new ConsoleLoggerAdapter(name);
   }
 
   /**
