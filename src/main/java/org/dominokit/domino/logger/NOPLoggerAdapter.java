@@ -18,9 +18,7 @@ package org.dominokit.domino.logger;
 import java.util.logging.Level;
 import org.slf4j.helpers.MarkerIgnoringBase;
 
-/**
- *
- */
+/** */
 public class NOPLoggerAdapter extends MarkerIgnoringBase {
 
   public NOPLoggerAdapter(String name) {

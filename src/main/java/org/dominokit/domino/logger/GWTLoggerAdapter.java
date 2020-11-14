@@ -20,8 +20,10 @@ import java.util.logging.Logger;
 import org.slf4j.helpers.FormattingTuple;
 import org.slf4j.helpers.MarkerIgnoringBase;
 import org.slf4j.helpers.MessageFormatter;
+
 /**
- * This class is intended to be used in the browser and is a thin wrapper around the {@link java.util.logging.Logger}
+ * This class is intended to be used in the browser and is a thin wrapper around the {@link
+ * java.util.logging.Logger}
  */
 public class GWTLoggerAdapter extends MarkerIgnoringBase {
   private final Logger logger;
