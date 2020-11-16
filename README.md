@@ -3,15 +3,25 @@
 # domino-slf4j-logger
 Enable using slf4j loggers inside GWT client side code, which increase code portability to the JVM where the slf4j logging is preferred.
 
-> Still needs some work to make sure the logs can be optimized by gwt compiler.
-
 ### Maven dependencies
+
+#### Release
 
 ```
 <dependency>
     <groupId>org.dominokit</groupId>
     <artifactId>domino-slf4j-logger</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
+</dependency>
+```
+
+#### Snapshot
+
+```
+<dependency>
+    <groupId>org.dominokit</groupId>
+    <artifactId>domino-slf4j-logger</artifactId>
+    <version>1.0.2-SNAPSHOT</version>
 </dependency>
 ```
 
@@ -39,6 +49,6 @@ LOGGER.info("I cann use SLF4J logger in gwt client side code.");
 
 ### Logging level
 
-Use the following system property to controle the log level
+Use the following system property to control the log level
 
 `domino.slf4j.logging.level` possible values are `OFF`, `INFO`, `WARN`, `DEBUG`, `ERROR`, `TRACE`  default is `INFO`.
