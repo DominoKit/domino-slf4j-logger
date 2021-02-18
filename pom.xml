@@ -6,7 +6,7 @@
     <artifactId>domino-slf4j-logger</artifactId>
     <version>1.0.2-SNAPSHOT</version>
 
-    <packaging>gwt-lib</packaging>
+    <packaging>jar</packaging>
 
     <name>domino-slf4j-logger</name>
     <description>provide implementation for using slf4j in gwt/j2cl client code</description>
@@ -66,6 +66,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <maven.compiler.plugin>3.8.1</maven.compiler.plugin>
+        <maven.jar.plugin>3.2.0</maven.jar.plugin>
         <maven.source.plugin>3.0.1</maven.source.plugin>
         <maven.javadoc.plugin>2.10.4</maven.javadoc.plugin>
         <maven.gpg.plugin>1.6</maven.gpg.plugin>
@@ -96,7 +97,6 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>1.7.30</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.google.elemental2</groupId>
@@ -110,7 +110,23 @@
         </dependency>
     </dependencies>
     <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.java</include>
+                </includes>
+            </resource>
+        </resources>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>${maven.jar.plugin}</version>
+            </plugin>
             <plugin>
                 <groupId>net.ltgt.gwt.maven</groupId>
                 <artifactId>gwt-maven-plugin</artifactId>
@@ -207,6 +223,19 @@
         </plugins>
         <pluginManagement>
             <plugins>
+                <!-- We are doing this to avoid issues in projects that allow mixed client and server classpath -->
+                <!-- and we dont have a standard way to load different implementations in a ServiceLoader style for client side -->
+                <!-- check https://github.com/DominoKit/domino-slf4j-logger/issues/2  and https://github.com/foal/gwt-time/discussions/5#discussioncomment-380644 -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>${maven.jar.plugin}</version>
+                    <configuration>
+                        <excludes>
+                            <exclude>org/slf4j/**/*.class</exclude>
+                        </excludes>
+                    </configuration>
+                </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
@@ -354,5 +383,4 @@
             </build>
         </profile>
     </profiles>
-
 </project>
