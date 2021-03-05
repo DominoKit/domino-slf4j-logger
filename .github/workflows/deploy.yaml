@@ -18,7 +18,7 @@ name: Deploy
 
 on:
   push:
-    branches: [ master , development]
+    branches: [gwt2.8.2]
 
 jobs:
   release:

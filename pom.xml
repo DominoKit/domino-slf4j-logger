@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.dominokit</groupId>
     <artifactId>domino-slf4j-logger</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.2-gwt2.8.2</version>
 
     <packaging>jar</packaging>
 
@@ -77,7 +77,7 @@
         <maven.license.plugin>3.0</maven.license.plugin>
         <maven.surfire.plugin>3.0.0-M1</maven.surfire.plugin>
         <maven.gwt.plugin>1.0.0</maven.gwt.plugin>
-        <elemental2.version>1.1.0</elemental2.version>
+        <elemental2.version>1.0.0-RC1</elemental2.version>
     </properties>
 
     <dependencies>
