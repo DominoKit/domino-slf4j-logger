@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.dominokit</groupId>
     <artifactId>domino-slf4j-logger</artifactId>
-    <version>HEAD-SNAPSHOT</version>
+    <version>1.0.2</version>
 
     <packaging>jar</packaging>
 
