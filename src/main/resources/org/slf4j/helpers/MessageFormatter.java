@@ -105,7 +105,7 @@ public class MessageFormatter {
    * @param arg The argument to be substituted in place of the formatting anchor
    * @return The formatted message
    */
-  public static org.slf4j.helpers.FormattingTuple format(String messagePattern, Object arg) {
+  public static FormattingTuple format(String messagePattern, Object arg) {
     return arrayFormat(messagePattern, arg);
   }
 
@@ -125,7 +125,7 @@ public class MessageFormatter {
    * @param arg2 The argument to be substituted in place of the second formatting anchor
    * @return The formatted message
    */
-  public static org.slf4j.helpers.FormattingTuple format(
+  public static FormattingTuple format(
       final String messagePattern, Object arg1, Object arg2) {
     return arrayFormat(messagePattern, arg1, arg2);
   }
@@ -150,17 +150,17 @@ public class MessageFormatter {
    * @param argArray An array of arguments to be substituted in place of formatting anchors
    * @return The formatted message
    */
-  public static org.slf4j.helpers.FormattingTuple arrayFormat(
+  public static FormattingTuple arrayFormat(
       final String messagePattern, final Object... argArray) {
 
     Throwable throwableCandidate = getThrowableCandidate(argArray);
 
     if (messagePattern == null) {
-      return new org.slf4j.helpers.FormattingTuple(null, argArray, throwableCandidate);
+      return new FormattingTuple(null, argArray, throwableCandidate);
     }
 
     if (argArray == null) {
-      return new org.slf4j.helpers.FormattingTuple(messagePattern);
+      return new FormattingTuple(messagePattern);
     }
 
     StringBuilder sbuf = new StringBuilder(messagePattern.length() + OFFSET);
@@ -174,12 +174,12 @@ public class MessageFormatter {
       if (j == -1) {
         // no more variables
         if (i == 0) { // this is a simple string
-          return new org.slf4j.helpers.FormattingTuple(
+          return new FormattingTuple(
               messagePattern, argArray, throwableCandidate);
         } else { // add the tail string which contains no variables and return
           // the result.
           sbuf.append(messagePattern.substring(i, messagePattern.length()));
-          return new org.slf4j.helpers.FormattingTuple(
+          return new FormattingTuple(
               sbuf.toString(), argArray, throwableCandidate);
         }
       } else {
@@ -214,9 +214,9 @@ public class MessageFormatter {
     // append the characters following the last {} pair.
     sbuf.append(messagePattern.substring(i, messagePattern.length()));
     if (L < argArray.length - 1) {
-      return new org.slf4j.helpers.FormattingTuple(sbuf.toString(), argArray, throwableCandidate);
+      return new FormattingTuple(sbuf.toString(), argArray, throwableCandidate);
     } else {
-      return new org.slf4j.helpers.FormattingTuple(sbuf.toString(), argArray, null);
+      return new FormattingTuple(sbuf.toString(), argArray, null);
     }
   }
 
