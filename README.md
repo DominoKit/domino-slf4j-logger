@@ -222,8 +222,8 @@ Notes:
 - ConsoleLoggingAdapter
     - Straightforward delegation to the browser console with level mapping
 
-- ConsoleTreeLoggingAdapter
-    - Similar to console, but may present messages in a structured “tree” style
+- CompositeLoggingAdapter
+    - Delegate the log to multiple adapters.
 
 Use cases:
 - Development diagnostics in the browser
@@ -233,7 +233,7 @@ Use cases:
 Example:
 ```java
 LoggingRouter.setDefaultAdapter(new ConsoleLoggingAdapter());
-LoggingRouter.register("DEBUG_TREE", new ConsoleTreeLoggingAdapter());
+LoggingRouter.register("COMPOSITE_LOG", new CompositeLoggingAdapter(new ConsoleLoggingAdapter(), new RemoteLoggingAdapter());
 ```
 
 
