@@ -24,7 +24,6 @@ import org.slf4j.event.Level;
 /** Console-based LoggingAdapter implementation that writes to the browser console. */
 public class ConsoleLoggingAdapter implements LoggingAdapter {
 
-  @Override
   /**
    * Writes the log message to the browser console using a console method that matches the level.
    *

@@ -48,6 +48,9 @@ public class LoggerFactory {
 
   /**
    * Allow applications/libraries to plug an SLF4JServiceProvider in GWT/J2CL environments.
+   *
+   * @param provider the SLF4J service provider to set
+   * @throws IllegalArgumentException if provider is null
    */
   public static void setProvider(SLF4JServiceProvider provider) {
     if (provider == null) throw new IllegalArgumentException("provider == null");
@@ -59,6 +62,11 @@ public class LoggerFactory {
     }
   }
 
+  /**
+   * Returns the currently configured SLF4J service provider.
+   *
+   * @return the active provider
+   */
   public static SLF4JServiceProvider getProvider() {
     return PROVIDER;
   }

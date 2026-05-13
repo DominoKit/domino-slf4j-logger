@@ -24,7 +24,6 @@ import org.slf4j.Logger;
 /** Default ILoggerFactory that creates {@link DominoLoggingAdapter} instances by name. */
 public class DefaultLoggerFactory implements ILoggerFactory {
 
-  @Override
   /**
    * Returns a logger backed by {@link DominoLoggingAdapter}.
    *

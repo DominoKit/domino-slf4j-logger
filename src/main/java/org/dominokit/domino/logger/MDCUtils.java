@@ -35,6 +35,10 @@ public final class MDCUtils {
   /**
    * Begin a scoped MDC entry for the given key/value. The value is pushed on the stack and
    * automatically popped when the returned scope is closed.
+   *
+   * @param key the MDC key
+   * @param value the MDC value to push
+   * @return an {@link AutoCloseable} that pops the value when closed
    */
   public static AutoCloseable withMdc(final String key, final String value) {
     final org.slf4j.spi.MDCAdapter adapter = MDC.getMDCAdapter();
@@ -54,6 +58,9 @@ public final class MDCUtils {
   /**
    * Begin a scoped MDC section for multiple key/value pairs. Keys are popped in reverse order on
    * close.
+   *
+   * @param entries a map of key/value pairs to push into MDC
+   * @return an {@link AutoCloseable} that pops the values in reverse order when closed
    */
   public static AutoCloseable withMdc(final Map<String, String> entries) {
     if (entries == null || entries.isEmpty()) {
@@ -79,7 +86,12 @@ public final class MDCUtils {
     };
   }
 
-  /** Get a snapshot copy of the MDC stack for the given key or null if empty. */
+  /**
+   * Get a snapshot copy of the MDC stack for the given key or null if empty.
+   *
+   * @param key the MDC key
+   * @return a copy of the MDC stack for the given key, or null if empty
+   */
   public static Deque<String> getMdcStack(String key) {
     Deque<String> d = MDC.getMDCAdapter().getCopyOfDequeByKey(key);
     if (d == null) return null;

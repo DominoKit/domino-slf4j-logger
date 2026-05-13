@@ -37,23 +37,38 @@ public final class LoggingRouter {
   /**
    * Set a default adapter to be used when no specific adapter is found for a marker, or when the
    * marker is null.
+   *
+   * @param adapter the default logging adapter
    */
   public static void setDefaultAdapter(LoggingAdapter adapter) {
     defaultAdapter = adapter;
   }
 
-  /** Get the current default adapter, may be null. */
+  /**
+   * Get the current default adapter, may be null.
+   *
+   * @return the default logging adapter
+   */
   public static LoggingAdapter getDefaultAdapter() {
     return defaultAdapter;
   }
 
-  /** Register an adapter for a marker name. Nulls are ignored. */
+  /**
+   * Register an adapter for a marker name. Nulls are ignored.
+   *
+   * @param markerName the name of the marker
+   * @param adapter the logging adapter to associate with the marker
+   */
   public static void register(String markerName, LoggingAdapter adapter) {
     if (markerName == null || adapter == null) return;
     ADAPTERS.put(markerName, adapter);
   }
 
-  /** Unregister the adapter associated with the given marker name. */
+  /**
+   * Unregister the adapter associated with the given marker name.
+   *
+   * @param markerName the name of the marker to unregister
+   */
   public static void unregister(String markerName) {
     if (markerName == null) return;
     ADAPTERS.remove(markerName);
@@ -65,9 +80,16 @@ public final class LoggingRouter {
   }
 
   /**
-   * Resolve an adapter for the given marker. - Returns the adapter mapped to the marker's name, if
-   * present. - Otherwise traverses marker references to find the first mapped adapter. - Otherwise
-   * returns the default adapter (if set), or null if none.
+   * Resolve an adapter for the given marker.
+   *
+   * <ul>
+   *   <li>Returns the adapter mapped to the marker's name, if present.
+   *   <li>Otherwise traverses marker references to find the first mapped adapter.
+   *   <li>Otherwise returns the default adapter (if set), or null if none.
+   * </ul>
+   *
+   * @param marker the marker to resolve an adapter for
+   * @return the resolved logging adapter, or null if none found
    */
   public static LoggingAdapter resolve(Marker marker) {
     if (marker == null) return defaultAdapter;

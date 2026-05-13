@@ -67,24 +67,41 @@ public class DominoLoggingAdapter implements Logger {
             || level == "ERROR";
   }
 
+  /**
+   * Creates a new DominoLoggingAdapter with the given name.
+   *
+   * @param name the name of the logger
+   */
   public DominoLoggingAdapter(String name) {
     this.name = name;
   }
 
   @Override
+  /**
+   * Returns the name of this logger.
+   *
+   * @return the logger name
+   */
   public String getName() {
     return name;
   }
 
   @Override
+  /**
+   * Checks if TRACE level is enabled.
+   *
+   * @return true if enabled, false otherwise
+   */
   public boolean isTraceEnabled() {
     return isEnabledForLevel(Level.TRACE);
   }
 
   /**
-   * We are using debug instead of trace here because trace would also print a stack trace from
-   * where it was called. check
-   * https://developer.mozilla.org/en-US/docs/Web/API/Console#Stack_traces
+   * Log a message at the TRACE level.
+   *
+   * <p>Note: We use debug instead of trace on the console to avoid automatic stack traces.
+   *
+   * @param msg the message to log
    */
   @Override
   public void trace(String msg) {
@@ -95,6 +112,12 @@ public class DominoLoggingAdapter implements Logger {
   }
 
   @Override
+  /**
+   * Log a formatted message at the TRACE level.
+   *
+   * @param format the message format string
+   * @param arg the argument
+   */
   public void trace(String format, Object arg) {
     if (isEnabledForLevel(Level.TRACE)) {
       formatAndLog(Level.TRACE, format, arg);
@@ -102,6 +125,13 @@ public class DominoLoggingAdapter implements Logger {
   }
 
   @Override
+  /**
+   * Log a formatted message at the TRACE level.
+   *
+   * @param format the message format string
+   * @param arg1 the first argument
+   * @param arg2 the second argument
+   */
   public void trace(String format, Object arg1, Object arg2) {
     if (isEnabledForLevel(Level.TRACE)) {
       formatAndLog(Level.TRACE, format, arg1, arg2);
@@ -109,6 +139,12 @@ public class DominoLoggingAdapter implements Logger {
   }
 
   @Override
+  /**
+   * Log a formatted message at the TRACE level.
+   *
+   * @param format the message format string
+   * @param argArray an array of arguments
+   */
   public void trace(String format, Object... argArray) {
     if (isEnabledForLevel(Level.TRACE)) {
       formatAndLog(Level.TRACE, format, argArray);
@@ -116,6 +152,12 @@ public class DominoLoggingAdapter implements Logger {
   }
 
   @Override
+  /**
+   * Log a message at the TRACE level with an associated {@link Throwable}.
+   *
+   * @param msg the message to log
+   * @param t the associated throwable
+   */
   public void trace(String msg, Throwable t) {
     if (isEnabledForLevel(Level.TRACE)) {
       CONSOLE_ADAPTER.log(
@@ -124,11 +166,21 @@ public class DominoLoggingAdapter implements Logger {
   }
 
   @Override
+  /**
+   * Checks if DEBUG level is enabled.
+   *
+   * @return true if enabled, false otherwise
+   */
   public boolean isDebugEnabled() {
     return isEnabledForLevel(Level.DEBUG);
   }
 
   @Override
+  /**
+   * Log a message at the DEBUG level.
+   *
+   * @param msg the message to log
+   */
   public void debug(String msg) {
     if (isEnabledForLevel(Level.DEBUG)) {
       CONSOLE_ADAPTER.log(
@@ -137,6 +189,12 @@ public class DominoLoggingAdapter implements Logger {
   }
 
   @Override
+  /**
+   * Log a formatted message at the DEBUG level.
+   *
+   * @param format the message format string
+   * @param arg the argument
+   */
   public void debug(String format, Object arg) {
     if (isEnabledForLevel(Level.DEBUG)) {
       formatAndLog(Level.DEBUG, format, arg);
@@ -144,6 +202,13 @@ public class DominoLoggingAdapter implements Logger {
   }
 
   @Override
+  /**
+   * Log a formatted message at the DEBUG level.
+   *
+   * @param format the message format string
+   * @param arg1 the first argument
+   * @param arg2 the second argument
+   */
   public void debug(String format, Object arg1, Object arg2) {
     if (isEnabledForLevel(Level.DEBUG)) {
       formatAndLog(Level.DEBUG, format, arg1, arg2);
@@ -151,6 +216,12 @@ public class DominoLoggingAdapter implements Logger {
   }
 
   @Override
+  /**
+   * Log a formatted message at the DEBUG level.
+   *
+   * @param format the message format string
+   * @param argArray an array of arguments
+   */
   public void debug(String format, Object... argArray) {
     if (isEnabledForLevel(Level.DEBUG)) {
       formatAndLog(Level.DEBUG, format, argArray);
@@ -158,6 +229,12 @@ public class DominoLoggingAdapter implements Logger {
   }
 
   @Override
+  /**
+   * Log a message at the DEBUG level with an associated {@link Throwable}.
+   *
+   * @param msg the message to log
+   * @param t the associated throwable
+   */
   public void debug(String msg, Throwable t) {
     if (isEnabledForLevel(Level.DEBUG)) {
       CONSOLE_ADAPTER.log(
@@ -166,11 +243,21 @@ public class DominoLoggingAdapter implements Logger {
   }
 
   @Override
+  /**
+   * Checks if INFO level is enabled.
+   *
+   * @return true if enabled, false otherwise
+   */
   public boolean isInfoEnabled() {
     return isEnabledForLevel(Level.INFO);
   }
 
   @Override
+  /**
+   * Log a message at the INFO level.
+   *
+   * @param msg the message to log
+   */
   public void info(String msg) {
     if (isEnabledForLevel(Level.INFO)) {
       CONSOLE_ADAPTER.log(
@@ -179,6 +266,12 @@ public class DominoLoggingAdapter implements Logger {
   }
 
   @Override
+  /**
+   * Log a formatted message at the INFO level.
+   *
+   * @param format the message format string
+   * @param arg the argument
+   */
   public void info(String format, Object arg) {
     if (isEnabledForLevel(Level.INFO)) {
       formatAndLog(Level.INFO, format, arg);
@@ -186,6 +279,13 @@ public class DominoLoggingAdapter implements Logger {
   }
 
   @Override
+  /**
+   * Log a formatted message at the INFO level.
+   *
+   * @param format the message format string
+   * @param arg1 the first argument
+   * @param arg2 the second argument
+   */
   public void info(String format, Object arg1, Object arg2) {
     if (isEnabledForLevel(Level.INFO)) {
       formatAndLog(Level.INFO, format, arg1, arg2);
@@ -193,6 +293,12 @@ public class DominoLoggingAdapter implements Logger {
   }
 
   @Override
+  /**
+   * Log a formatted message at the INFO level.
+   *
+   * @param format the message format string
+   * @param argArray an array of arguments
+   */
   public void info(String format, Object... argArray) {
     if (isEnabledForLevel(Level.INFO)) {
       formatAndLog(Level.INFO, format, argArray);
@@ -200,6 +306,12 @@ public class DominoLoggingAdapter implements Logger {
   }
 
   @Override
+  /**
+   * Log a message at the INFO level with an associated {@link Throwable}.
+   *
+   * @param msg the message to log
+   * @param t the associated throwable
+   */
   public void info(String msg, Throwable t) {
     if (isEnabledForLevel(Level.INFO)) {
       CONSOLE_ADAPTER.log(
@@ -208,11 +320,21 @@ public class DominoLoggingAdapter implements Logger {
   }
 
   @Override
+  /**
+   * Checks if WARN level is enabled.
+   *
+   * @return true if enabled, false otherwise
+   */
   public boolean isWarnEnabled() {
     return isEnabledForLevel(Level.WARN);
   }
 
   @Override
+  /**
+   * Log a message at the WARN level.
+   *
+   * @param msg the message to log
+   */
   public void warn(String msg) {
     if (isEnabledForLevel(Level.WARN)) {
       CONSOLE_ADAPTER.log(
@@ -221,6 +343,12 @@ public class DominoLoggingAdapter implements Logger {
   }
 
   @Override
+  /**
+   * Log a formatted message at the WARN level.
+   *
+   * @param format the message format string
+   * @param arg the argument
+   */
   public void warn(String format, Object arg) {
     if (isEnabledForLevel(Level.WARN)) {
       formatAndLog(Level.WARN, format, arg);
@@ -228,6 +356,13 @@ public class DominoLoggingAdapter implements Logger {
   }
 
   @Override
+  /**
+   * Log a formatted message at the WARN level.
+   *
+   * @param format the message format string
+   * @param arg1 the first argument
+   * @param arg2 the second argument
+   */
   public void warn(String format, Object arg1, Object arg2) {
     if (isEnabledForLevel(Level.WARN)) {
       formatAndLog(Level.WARN, format, arg1, arg2);
@@ -235,6 +370,12 @@ public class DominoLoggingAdapter implements Logger {
   }
 
   @Override
+  /**
+   * Log a formatted message at the WARN level.
+   *
+   * @param format the message format string
+   * @param argArray an array of arguments
+   */
   public void warn(String format, Object... argArray) {
     if (isEnabledForLevel(Level.WARN)) {
       formatAndLog(Level.WARN, format, argArray);
@@ -242,6 +383,12 @@ public class DominoLoggingAdapter implements Logger {
   }
 
   @Override
+  /**
+   * Log a message at the WARN level with an associated {@link Throwable}.
+   *
+   * @param msg the message to log
+   * @param t the associated throwable
+   */
   public void warn(String msg, Throwable t) {
     if (isEnabledForLevel(Level.WARN)) {
       CONSOLE_ADAPTER.log(
@@ -250,10 +397,21 @@ public class DominoLoggingAdapter implements Logger {
   }
 
   @Override
+  /**
+   * Checks if ERROR level is enabled.
+   *
+   * @return true if enabled, false otherwise
+   */
   public boolean isErrorEnabled() {
     return isEnabledForLevel(Level.ERROR);
   }
 
+  /**
+   * Checks if the given level is enabled.
+   *
+   * @param level the level to check
+   * @return true if enabled, false otherwise
+   */
   public boolean isEnabledForLevel(Level level) {
     switch (level) {
       case TRACE:
@@ -272,6 +430,11 @@ public class DominoLoggingAdapter implements Logger {
   }
 
   @Override
+  /**
+   * Log a message at the ERROR level.
+   *
+   * @param msg the message to log
+   */
   public void error(String msg) {
     if (isEnabledForLevel(Level.ERROR)) {
       CONSOLE_ADAPTER.log(
@@ -280,6 +443,12 @@ public class DominoLoggingAdapter implements Logger {
   }
 
   @Override
+  /**
+   * Log a formatted message at the ERROR level.
+   *
+   * @param format the message format string
+   * @param arg the argument
+   */
   public void error(String format, Object arg) {
     if (isEnabledForLevel(Level.ERROR)) {
       formatAndLog(Level.ERROR, format, arg);
@@ -287,6 +456,13 @@ public class DominoLoggingAdapter implements Logger {
   }
 
   @Override
+  /**
+   * Log a formatted message at the ERROR level.
+   *
+   * @param format the message format string
+   * @param arg1 the first argument
+   * @param arg2 the second argument
+   */
   public void error(String format, Object arg1, Object arg2) {
     if (isEnabledForLevel(Level.ERROR)) {
       formatAndLog(Level.ERROR, format, arg1, arg2);
@@ -294,6 +470,12 @@ public class DominoLoggingAdapter implements Logger {
   }
 
   @Override
+  /**
+   * Log a formatted message at the ERROR level.
+   *
+   * @param format the message format string
+   * @param argArray an array of arguments
+   */
   public void error(String format, Object... argArray) {
     if (isEnabledForLevel(Level.ERROR)) {
       formatAndLog(Level.ERROR, format, argArray);
@@ -301,6 +483,12 @@ public class DominoLoggingAdapter implements Logger {
   }
 
   @Override
+  /**
+   * Log a message at the ERROR level with an associated {@link Throwable}.
+   *
+   * @param msg the message to log
+   * @param t the associated throwable
+   */
   public void error(String msg, Throwable t) {
     if (ERROR_ENABLED) {
       CONSOLE_ADAPTER.log(
@@ -310,11 +498,23 @@ public class DominoLoggingAdapter implements Logger {
 
   // Marker-aware routing: resolve adapter per marker, fallback to default behavior if none
   @Override
+  /**
+   * Checks if TRACE level is enabled for the given marker.
+   *
+   * @param marker the marker to check
+   * @return true if enabled, false otherwise
+   */
   public boolean isTraceEnabled(Marker marker) {
     return isTraceEnabled();
   }
 
   @Override
+  /**
+   * Log a message at the TRACE level with an associated {@link Marker}.
+   *
+   * @param marker the marker associated with the event
+   * @param msg the message to log
+   */
   public void trace(Marker marker, String msg) {
     LoggingAdapter adapter = LoggingRouter.resolve(marker);
     String enriched = enrichWithMarkerAndMdc(marker, msg);
@@ -327,16 +527,38 @@ public class DominoLoggingAdapter implements Logger {
   }
 
   @Override
+  /**
+   * Log a formatted message at the TRACE level with an associated {@link Marker}.
+   *
+   * @param marker the marker associated with the event
+   * @param format the message format string
+   * @param arg the argument
+   */
   public void trace(Marker marker, String format, Object arg) {
     trace(marker, format, new Object[] {arg});
   }
 
   @Override
+  /**
+   * Log a formatted message at the TRACE level with an associated {@link Marker}.
+   *
+   * @param marker the marker associated with the event
+   * @param format the message format string
+   * @param arg1 the first argument
+   * @param arg2 the second argument
+   */
   public void trace(Marker marker, String format, Object arg1, Object arg2) {
     trace(marker, format, new Object[] {arg1, arg2});
   }
 
   @Override
+  /**
+   * Log a formatted message at the TRACE level with an associated {@link Marker}.
+   *
+   * @param marker the marker associated with the event
+   * @param format the message format string
+   * @param argArray an array of arguments
+   */
   public void trace(Marker marker, String format, Object... argArray) {
     LoggingAdapter adapter = LoggingRouter.resolve(marker);
     String enrichedFormat = enrichWithMarkerAndMdc(marker, format);
@@ -354,6 +576,13 @@ public class DominoLoggingAdapter implements Logger {
   }
 
   @Override
+  /**
+   * Log a message at the TRACE level with an associated {@link Marker} and {@link Throwable}.
+   *
+   * @param marker the marker associated with the event
+   * @param msg the message to log
+   * @param t the associated throwable
+   */
   public void trace(Marker marker, String msg, Throwable t) {
     LoggingAdapter adapter = LoggingRouter.resolve(marker);
     String enriched = enrichWithMarkerAndMdc(marker, msg);
@@ -366,11 +595,23 @@ public class DominoLoggingAdapter implements Logger {
   }
 
   @Override
+  /**
+   * Checks if DEBUG level is enabled for the given marker.
+   *
+   * @param marker the marker to check
+   * @return true if enabled, false otherwise
+   */
   public boolean isDebugEnabled(Marker marker) {
     return isDebugEnabled();
   }
 
   @Override
+  /**
+   * Log a message at the DEBUG level with an associated {@link Marker}.
+   *
+   * @param marker the marker associated with the event
+   * @param msg the message to log
+   */
   public void debug(Marker marker, String msg) {
     LoggingAdapter adapter = LoggingRouter.resolve(marker);
     String enriched = enrichWithMarkerAndMdc(marker, msg);
@@ -383,16 +624,38 @@ public class DominoLoggingAdapter implements Logger {
   }
 
   @Override
+  /**
+   * Log a formatted message at the DEBUG level with an associated {@link Marker}.
+   *
+   * @param marker the marker associated with the event
+   * @param format the message format string
+   * @param arg the argument
+   */
   public void debug(Marker marker, String format, Object arg) {
     debug(marker, format, new Object[] {arg});
   }
 
   @Override
+  /**
+   * Log a formatted message at the DEBUG level with an associated {@link Marker}.
+   *
+   * @param marker the marker associated with the event
+   * @param format the message format string
+   * @param arg1 the first argument
+   * @param arg2 the second argument
+   */
   public void debug(Marker marker, String format, Object arg1, Object arg2) {
     debug(marker, format, new Object[] {arg1, arg2});
   }
 
   @Override
+  /**
+   * Log a formatted message at the DEBUG level with an associated {@link Marker}.
+   *
+   * @param marker the marker associated with the event
+   * @param format the message format string
+   * @param arguments an array of arguments
+   */
   public void debug(Marker marker, String format, Object... arguments) {
     LoggingAdapter adapter = LoggingRouter.resolve(marker);
     String enrichedFormat = enrichWithMarkerAndMdc(marker, format);
@@ -410,6 +673,13 @@ public class DominoLoggingAdapter implements Logger {
   }
 
   @Override
+  /**
+   * Log a message at the DEBUG level with an associated {@link Marker} and {@link Throwable}.
+   *
+   * @param marker the marker associated with the event
+   * @param msg the message to log
+   * @param t the associated throwable
+   */
   public void debug(Marker marker, String msg, Throwable t) {
     LoggingAdapter adapter = LoggingRouter.resolve(marker);
     String enriched = enrichWithMarkerAndMdc(marker, msg);
@@ -422,11 +692,23 @@ public class DominoLoggingAdapter implements Logger {
   }
 
   @Override
+  /**
+   * Checks if INFO level is enabled for the given marker.
+   *
+   * @param marker the marker to check
+   * @return true if enabled, false otherwise
+   */
   public boolean isInfoEnabled(Marker marker) {
     return isInfoEnabled();
   }
 
   @Override
+  /**
+   * Log a message at the INFO level with an associated {@link Marker}.
+   *
+   * @param marker the marker associated with the event
+   * @param msg the message to log
+   */
   public void info(Marker marker, String msg) {
     LoggingAdapter adapter = LoggingRouter.resolve(marker);
     String enriched = enrichWithMarkerAndMdc(marker, msg);
@@ -439,16 +721,38 @@ public class DominoLoggingAdapter implements Logger {
   }
 
   @Override
+  /**
+   * Log a formatted message at the INFO level with an associated {@link Marker}.
+   *
+   * @param marker the marker associated with the event
+   * @param format the message format string
+   * @param arg the argument
+   */
   public void info(Marker marker, String format, Object arg) {
     info(marker, format, new Object[] {arg});
   }
 
   @Override
+  /**
+   * Log a formatted message at the INFO level with an associated {@link Marker}.
+   *
+   * @param marker the marker associated with the event
+   * @param format the message format string
+   * @param arg1 the first argument
+   * @param arg2 the second argument
+   */
   public void info(Marker marker, String format, Object arg1, Object arg2) {
     info(marker, format, new Object[] {arg1, arg2});
   }
 
   @Override
+  /**
+   * Log a formatted message at the INFO level with an associated {@link Marker}.
+   *
+   * @param marker the marker associated with the event
+   * @param format the message format string
+   * @param arguments an array of arguments
+   */
   public void info(Marker marker, String format, Object... arguments) {
     LoggingAdapter adapter = LoggingRouter.resolve(marker);
     String enrichedFormat = enrichWithMarkerAndMdc(marker, format);
@@ -465,6 +769,13 @@ public class DominoLoggingAdapter implements Logger {
   }
 
   @Override
+  /**
+   * Log a message at the INFO level with an associated {@link Marker} and {@link Throwable}.
+   *
+   * @param marker the marker associated with the event
+   * @param msg the message to log
+   * @param t the associated throwable
+   */
   public void info(Marker marker, String msg, Throwable t) {
     LoggingAdapter adapter = LoggingRouter.resolve(marker);
     String enriched = enrichWithMarkerAndMdc(marker, msg);
@@ -477,11 +788,23 @@ public class DominoLoggingAdapter implements Logger {
   }
 
   @Override
+  /**
+   * Checks if WARN level is enabled for the given marker.
+   *
+   * @param marker the marker to check
+   * @return true if enabled, false otherwise
+   */
   public boolean isWarnEnabled(Marker marker) {
     return isWarnEnabled();
   }
 
   @Override
+  /**
+   * Log a message at the WARN level with an associated {@link Marker}.
+   *
+   * @param marker the marker associated with the event
+   * @param msg the message to log
+   */
   public void warn(Marker marker, String msg) {
     LoggingAdapter adapter = LoggingRouter.resolve(marker);
     String enriched = enrichWithMarkerAndMdc(marker, msg);
@@ -494,16 +817,38 @@ public class DominoLoggingAdapter implements Logger {
   }
 
   @Override
+  /**
+   * Log a formatted message at the WARN level with an associated {@link Marker}.
+   *
+   * @param marker the marker associated with the event
+   * @param format the message format string
+   * @param arg the argument
+   */
   public void warn(Marker marker, String format, Object arg) {
     warn(marker, format, new Object[] {arg});
   }
 
   @Override
+  /**
+   * Log a formatted message at the WARN level with an associated {@link Marker}.
+   *
+   * @param marker the marker associated with the event
+   * @param format the message format string
+   * @param arg1 the first argument
+   * @param arg2 the second argument
+   */
   public void warn(Marker marker, String format, Object arg1, Object arg2) {
     warn(marker, format, new Object[] {arg1, arg2});
   }
 
   @Override
+  /**
+   * Log a formatted message at the WARN level with an associated {@link Marker}.
+   *
+   * @param marker the marker associated with the event
+   * @param format the message format string
+   * @param arguments an array of arguments
+   */
   public void warn(Marker marker, String format, Object... arguments) {
     LoggingAdapter adapter = LoggingRouter.resolve(marker);
     String enrichedFormat = enrichWithMarkerAndMdc(marker, format);
@@ -520,6 +865,13 @@ public class DominoLoggingAdapter implements Logger {
   }
 
   @Override
+  /**
+   * Log a message at the WARN level with an associated {@link Marker} and {@link Throwable}.
+   *
+   * @param marker the marker associated with the event
+   * @param msg the message to log
+   * @param t the associated throwable
+   */
   public void warn(Marker marker, String msg, Throwable t) {
     LoggingAdapter adapter = LoggingRouter.resolve(marker);
     String enriched = enrichWithMarkerAndMdc(marker, msg);
@@ -532,11 +884,23 @@ public class DominoLoggingAdapter implements Logger {
   }
 
   @Override
+  /**
+   * Checks if ERROR level is enabled for the given marker.
+   *
+   * @param marker the marker to check
+   * @return true if enabled, false otherwise
+   */
   public boolean isErrorEnabled(Marker marker) {
     return isErrorEnabled();
   }
 
   @Override
+  /**
+   * Log a message at the ERROR level with an associated {@link Marker}.
+   *
+   * @param marker the marker associated with the event
+   * @param msg the message to log
+   */
   public void error(Marker marker, String msg) {
     LoggingAdapter adapter = LoggingRouter.resolve(marker);
     String enriched = enrichWithMarkerAndMdc(marker, msg);
@@ -549,16 +913,38 @@ public class DominoLoggingAdapter implements Logger {
   }
 
   @Override
+  /**
+   * Log a formatted message at the ERROR level with an associated {@link Marker}.
+   *
+   * @param marker the marker associated with the event
+   * @param format the message format string
+   * @param arg the argument
+   */
   public void error(Marker marker, String format, Object arg) {
     error(marker, format, new Object[] {arg});
   }
 
   @Override
+  /**
+   * Log a formatted message at the ERROR level with an associated {@link Marker}.
+   *
+   * @param marker the marker associated with the event
+   * @param format the message format string
+   * @param arg1 the first argument
+   * @param arg2 the second argument
+   */
   public void error(Marker marker, String format, Object arg1, Object arg2) {
     error(marker, format, new Object[] {arg1, arg2});
   }
 
   @Override
+  /**
+   * Log a formatted message at the ERROR level with an associated {@link Marker}.
+   *
+   * @param marker the marker associated with the event
+   * @param format the message format string
+   * @param arguments an array of arguments
+   */
   public void error(Marker marker, String format, Object... arguments) {
     LoggingAdapter adapter = LoggingRouter.resolve(marker);
     String enrichedFormat = enrichWithMarkerAndMdc(marker, format);
@@ -576,6 +962,13 @@ public class DominoLoggingAdapter implements Logger {
   }
 
   @Override
+  /**
+   * Log a message at the ERROR level with an associated {@link Marker} and {@link Throwable}.
+   *
+   * @param marker the marker associated with the event
+   * @param msg the message to log
+   * @param t the associated throwable
+   */
   public void error(Marker marker, String msg, Throwable t) {
     LoggingAdapter adapter = LoggingRouter.resolve(marker);
     String enriched = enrichWithMarkerAndMdc(marker, msg);
@@ -593,6 +986,10 @@ public class DominoLoggingAdapter implements Logger {
    *
    * <p>Usage: try (AutoCloseable scope = logger.withMdc("requestId", reqId)) { // logging with
    * requestId }
+   *
+   * @param key the MDC key
+   * @param value the MDC value to push
+   * @return an {@link AutoCloseable} that pops the value when closed
    */
   public AutoCloseable withMdc(final String key, final String value) {
     final org.slf4j.spi.MDCAdapter adapter = org.slf4j.MDC.getMDCAdapter();
@@ -612,6 +1009,9 @@ public class DominoLoggingAdapter implements Logger {
   /**
    * Begin a scoped MDC section for multiple key/value pairs. Each key is pushed and will be popped
    * on close. Keys are popped in reverse insertion order.
+   *
+   * @param entries a map of key/value pairs to push into MDC
+   * @return an {@link AutoCloseable} that pops the values in reverse order when closed
    */
   public AutoCloseable withMdc(final java.util.Map<String, String> entries) {
     if (entries == null || entries.isEmpty()) {
@@ -638,7 +1038,12 @@ public class DominoLoggingAdapter implements Logger {
     };
   }
 
-  /** Retrieve a snapshot copy of the MDC stack for the given key, or null if empty. */
+  /**
+   * Retrieve a snapshot copy of the MDC stack for the given key, or null if empty.
+   *
+   * @param key the MDC key
+   * @return a copy of the MDC stack for the given key, or null if empty
+   */
   public java.util.Deque<String> getMdcStack(String key) {
     return org.slf4j.MDC.getMDCAdapter().getCopyOfDequeByKey(key);
   }

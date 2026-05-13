@@ -85,6 +85,12 @@ public class BasicMarkerFactory implements IMarkerFactory {
         return markerMap.containsKey(name);
     }
 
+    /**
+     * Detach an existing marker.
+     *
+     * @param name the name of the marker to be detached
+     * @return true if the marker was detached, false otherwise
+     */
     public boolean detachMarker(String name) {
         if (name == null) {
             return false;
@@ -92,6 +98,13 @@ public class BasicMarkerFactory implements IMarkerFactory {
         return (markerMap.remove(name) != null);
     }
 
+    /**
+     * Manufacture a {@link BasicMarker} instance by name. The returned instance is not internally
+     * registered.
+     *
+     * @param name the name of the marker to be created
+     * @return a Marker instance
+     */
     public Marker getDetachedMarker(String name) {
         return new BasicMarker(name);
     }

@@ -37,6 +37,7 @@ public final class DominoLoggerFactory {
 
   private static volatile ILoggerFactory FACTORY = new DefaultLoggerFactory();
 
+  /** Returns a new logger factory. */
   private DominoLoggerFactory() {}
 
   /**

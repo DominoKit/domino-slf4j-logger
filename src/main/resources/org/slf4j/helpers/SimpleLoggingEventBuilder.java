@@ -9,6 +9,10 @@ import org.slf4j.Marker;
 import org.slf4j.event.Level;
 import org.slf4j.spi.LoggingEventBuilder;
 
+/**
+ * Minimal LoggingEventBuilder implementation delegating to the underlying Logger for GWT/J2CL
+ * environments.
+ */
 public class SimpleLoggingEventBuilder implements LoggingEventBuilder {
 
   private final Logger logger;
@@ -16,6 +20,12 @@ public class SimpleLoggingEventBuilder implements LoggingEventBuilder {
   private Throwable cause;
   private Marker marker;
 
+  /**
+   * Creates a new SimpleLoggingEventBuilder.
+   *
+   * @param logger the logger to delegate to
+   * @param level the log level
+   */
   public SimpleLoggingEventBuilder(Logger logger, Level level) {
     this.logger = logger;
     this.level = level;

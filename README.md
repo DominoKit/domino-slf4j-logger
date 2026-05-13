@@ -29,7 +29,7 @@ Maven (example):
 <dependency>
   <groupId>org.dominokit</groupId>
   <artifactId>domino-slf4j-logger</artifactId>
-  <version>YOUR_VERSION_HERE</version>
+  <version>${domino.slf4j.version}</version>
 </dependency>
 ```
 

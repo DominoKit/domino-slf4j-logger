@@ -41,14 +41,29 @@ public class FormattingTuple {
     this.argArray = argArray;
   }
 
+  /**
+   * Returns the formatted message.
+   *
+   * @return the formatted message
+   */
   public String getMessage() {
     return message;
   }
 
+  /**
+   * Returns the argument array.
+   *
+   * @return the argument array
+   */
   public Object[] getArgArray() {
     return argArray;
   }
 
+  /**
+   * Returns the throwable associated with the formatting.
+   *
+   * @return the throwable, or null if none
+   */
   public Throwable getThrowable() {
     return throwable;
   }

@@ -40,7 +40,6 @@ public class CompositeLoggingAdapter implements LoggingAdapter {
     this.adapters = new HashSet<>(Arrays.asList(adapters));
   }
 
-  @Override
   /**
    * Forwards the log call to all configured delegate adapters.
    *
