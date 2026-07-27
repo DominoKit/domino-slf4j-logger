@@ -1,30 +1,25 @@
 # domino-slf4j-logger
 
-A lightweight SLF4J implementation tailored for browser-based Java (GWT/JS) applications, with first-class support for:
-- Marker-based routing to pluggable adapters
-- Scoped MDC helpers designed for single-threaded UI runtimes
-- Console-oriented adapters suitable for web apps
+`domino-slf4j-logger` is an SLF4J implementation for browser-side Java applications built with GWT or J2CL. It keeps the familiar SLF4J API, but adds browser-friendly routing, scoped MDC helpers, and console adapters that work well in web apps.
 
-This library lets you keep using the familiar SLF4J API while routing log events to different destinations (e.g., browser console, remote endpoint) based on markers, and manage contextual information using MDC scopes.
+## What it gives you
 
----
+- Standard `Logger`, `Marker`, and `MDC` entry points
+- Marker-based routing to different adapters
+- Browser console output out of the box
+- Scoped MDC helpers that work with try-with-resources
+- A default SLF4J provider you can extend if you need custom factories
 
-## Highlights
+## Requirements
 
-- SLF4J-compatible API surface for browser/GWT environments
-- Marker-based routing: send different logs to different adapters
-- Pluggable adapters: console, tree-style console, or your own
-- Scoped MDC utilities with try-with-resources
-- Zero-dependency runtime for typical usage; simple to wire in
+- Java 11+
+- SLF4J 2.x
+- A GWT or J2CL browser runtime
 
----
+## Install
 
-## Installation
+Add the dependency:
 
-- Java: 8+
-- Intended for GWT/JS environments (e.g., DominoKit)
-
-Maven (example):
 ```xml
 <dependency>
   <groupId>org.dominokit</groupId>
@@ -33,21 +28,18 @@ Maven (example):
 </dependency>
 ```
 
+Then inherit the GWT module in your app module:
 
-GWT module:
-- In your app module `.gwt.xml`, inherit the logging module (example):
 ```xml
 <inherits name="org.dominokit.domino.logger.Logging"/>
 ```
 
-
-That’s typically all you need to get the SLF4J API wired for GWT.
-
----
+That is usually enough to start using SLF4J in the client.
 
 ## Quick start
 
-Basic logging with SLF4J:
+Basic logging looks the same as regular SLF4J:
+
 ```java
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,7 +48,7 @@ public class Hello {
   private static final Logger log = LoggerFactory.getLogger(Hello.class);
 
   public void run() {
-    log.info("Hello from the browser!");
+    log.info("Hello from the browser");
     log.warn("Be careful: {}", "something happened");
     try {
       risky();
@@ -71,97 +63,114 @@ public class Hello {
 }
 ```
 
+By default, output goes to the browser console through the built-in console adapter.
 
-By default, logs go to the configured adapter(s). See “Routing by marker” for custom routing.
+## How it works
 
----
+The logging flow is simple:
+
+1. `LoggerFactory.getLogger(...)` returns a `DominoLoggingAdapter`.
+2. The logger formats SLF4J placeholders and enriches messages with marker and MDC context.
+3. `LoggingRouter` chooses the adapter for marker-aware calls.
+4. The selected `LoggingAdapter` writes to the final destination, such as the browser console or a remote endpoint.
 
 ## Routing by marker
 
-You can route logs dynamically based on SLF4J markers. For example, direct payment-related logs to one adapter, audit logs to another, and everything else to a default adapter.
+Marker routing lets you send different log streams to different adapters. The router works with marker names, not marker instances, so you usually register routes once during startup.
 
-- Register adapters by marker name
-- Optionally set a default adapter
-
-Example:
 ```java
+import org.dominokit.domino.logger.ConsoleLoggingAdapter;
+import org.dominokit.domino.logger.LoggingRouter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
-import org.dominokit.domino.logger.LoggingRouter;
-import org.dominokit.domino.logger.LoggingAdapter;
-import org.dominokit.domino.logger.TestLoggingAdapter; // Example built-in
 
 public class PaymentFlow {
   private static final Logger log = LoggerFactory.getLogger(PaymentFlow.class);
   private static final Marker PAYMENT = MarkerFactory.getMarker("PAYMENT");
 
   public void initLogging() {
-    // Default adapter for logs with no specific marker mapping
     LoggingRouter.setDefaultAdapter(new ConsoleLoggingAdapter());
-
-    // Route PAYMENT marker logs (and marker hierarchies) to a specialized adapter
     LoggingRouter.register("PAYMENT", new ConsoleLoggingAdapter());
   }
 
-  public void charge() {
-    log.info(PAYMENT, "Charging customer {}", "123");
+  public void charge(String orderId) {
+    log.info(PAYMENT, "Charging order {}", orderId);
   }
 }
 ```
 
+Some details matter:
 
-Marker hierarchy is respected: if a marker references another marker that has an adapter mapping, that mapping will be used.
+- A direct marker mapping wins first.
+- If no direct mapping exists, the router walks referenced markers recursively.
+- If nothing matches, the default adapter is used, if one is configured.
+- `LoggingRouter.clear()` removes all marker mappings, and `unregister(...)` removes one mapping.
 
----
+If you want a hierarchy, add references through SLF4J markers:
 
-## Writing a custom adapter
+```java
+Marker payment = MarkerFactory.getMarker("PAYMENT");
+Marker online = MarkerFactory.getMarker("ONLINE");
+payment.add(online);
 
-Adapters receive already-formatted messages along with the level, logger name, marker (if any), throwable (if any), and an MDC snapshot. Implement your own to forward logs to remote endpoints, alternate consoles, buffers, or in-memory stores.
+LoggingRouter.register("ONLINE", new ConsoleLoggingAdapter());
+log.info(payment, "Hierarchical marker example");
+```
+
+If `PAYMENT` is not registered, the router will continue through the referenced marker names until it finds a match.
+
+## Custom adapters
+
+Implement `LoggingAdapter` when you want to send logs somewhere other than the browser console.
 
 ```java
 import java.util.Map;
+import org.dominokit.domino.logger.LoggingAdapter;
 import org.slf4j.Marker;
 import org.slf4j.event.Level;
-import org.dominokit.domino.logger.LoggingAdapter;
 
 public class RemoteAdapter implements LoggingAdapter {
   @Override
-  public void log(Level level,
-                  String loggerName,
-                  Marker marker,
-                  String message,
-                  Throwable throwable,
-                  Map<String, String> mdc) {
-    // Example: send JSON to a server endpoint
-    // Your transport code here...
+  public void log(
+      Level level,
+      String loggerName,
+      Marker marker,
+      String message,
+      Throwable throwable,
+      Map<String, String> mdc) {
+    // Serialize the event and send it to your backend here.
   }
 }
 ```
 
+Register it like any other adapter:
 
-Then install it:
 ```java
 LoggingRouter.register("AUDIT", new RemoteAdapter());
-// Optionally set default:
 LoggingRouter.setDefaultAdapter(new RemoteAdapter());
 ```
 
+If you need to fan out to more than one destination, use `CompositeLoggingAdapter`:
 
-Unregister, clear, or replace mappings at runtime as needed.
+```java
+import org.dominokit.domino.logger.CompositeLoggingAdapter;
+import org.dominokit.domino.logger.ConsoleLoggingAdapter;
+import org.dominokit.domino.logger.LoggingRouter;
 
----
+LoggingRouter.setDefaultAdapter(
+    new CompositeLoggingAdapter(new ConsoleLoggingAdapter(), new RemoteAdapter()));
+```
 
-## MDC utilities (scoped)
+`CompositeLoggingAdapter` broadcasts to every delegate. Because it stores delegates in a set, the call order is not guaranteed. If order matters, write a small custom adapter instead.
 
-Manage contextual data (like request IDs, user IDs, correlation IDs) using scoped helpers designed for single-threaded browser runtimes.
+## MDC utilities
 
-- Push values for the scope duration; automatically pop on close
-- Push multiple entries at once
-- Access current stack snapshot of a specific key
+The MDC helpers are scoped and work well with browser-style, single-threaded code. Use them for request IDs, user IDs, correlation IDs, and similar context.
 
-Scoped single entry:
+Single value:
+
 ```java
 import org.dominokit.domino.logger.MDCUtils;
 import org.slf4j.Logger;
@@ -170,11 +179,11 @@ import org.slf4j.LoggerFactory;
 public class UserFlow {
   private static final Logger log = LoggerFactory.getLogger(UserFlow.class);
 
-  public void execute(String userId) {
+  public void execute(String userId) throws Exception {
     try (AutoCloseable scope = MDCUtils.withMdc("userId", userId)) {
       log.info("Starting user flow");
       nested();
-    } catch (Exception ignore) {}
+    }
   }
 
   private void nested() {
@@ -183,8 +192,8 @@ public class UserFlow {
 }
 ```
 
+Multiple values:
 
-Scoped multiple entries:
 ```java
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -195,121 +204,107 @@ ctx.put("flow", "onboarding");
 ctx.put("step", "emailVerification");
 
 try (AutoCloseable scope = MDCUtils.withMdc(ctx)) {
-  // All logs here include both flow and step
   log.info("Verifying email");
-} catch (Exception ignore) {}
+}
 ```
 
+Snapshot access:
 
-Get a snapshot of a single MDC key’s stack:
 ```java
 import java.util.Deque;
 import org.dominokit.domino.logger.MDCUtils;
 
 Deque<String> userIdStack = MDCUtils.getMdcStack("userId");
-// Copy for inspection without mutating the actual MDC
 ```
-
 
 Notes:
-- Designed for single-threaded UI runtimes (like GWT in the browser).
-- Values are pushed in order and popped in reverse order for multi-entry scopes.
 
----
+- Values are pushed for the lifetime of the scope and popped automatically on close.
+- Multi-value scopes are popped in reverse insertion order.
+- `getMdcStack(...)` returns a defensive copy, so reading it does not mutate live MDC state.
+- The implementation is designed for the single-threaded browser environment.
 
-## Built-in console adapters
+## Built-in adapters
 
-- ConsoleLoggingAdapter
-    - Straightforward delegation to the browser console with level mapping
+### ConsoleLoggingAdapter
 
-- CompositeLoggingAdapter
-    - Delegate the log to multiple adapters.
+This adapter writes to the browser console and maps levels to matching console methods:
 
-Use cases:
-- Development diagnostics in the browser
-- Quick validation of marker-based routing
-- Baseline default adapter
+- `TRACE` and `DEBUG` to `console.debug`
+- `INFO` to `console.info`
+- `WARN` to `console.warn`
+- `ERROR` to `console.error`
 
-Example:
-```java
-LoggingRouter.setDefaultAdapter(new ConsoleLoggingAdapter());
-LoggingRouter.register("COMPOSITE_LOG", new CompositeLoggingAdapter(new ConsoleLoggingAdapter(), new RemoteLoggingAdapter());
+Use it for quick development output or as a default adapter.
+
+### CompositeLoggingAdapter
+
+This adapter forwards each event to multiple adapters. It is useful when you want console output and a remote sink at the same time.
+
+## Logging controls
+
+The module defines a few GWT properties with defaults:
+
+```xml
+<define-property name="domino.slf4j.logging.level" values="INFO,WARN,DEBUG,TRACE,ERROR,OFF"/>
+<define-property name="domino.slf4j.logging.showCaller" values="true,false"/>
+<define-property name="domino.slf4j.logging.showMdc" values="true,false"/>
 ```
 
+Default values are:
 
----
+- `domino.slf4j.logging.level=INFO`
+- `domino.slf4j.logging.showCaller=false`
+- `domino.slf4j.logging.showMdc=false`
+
+To override them, set the properties in your app module before compilation:
+
+```xml
+<module>
+  <inherits name="org.dominokit.domino.logger.Logging"/>
+  <set-property name="domino.slf4j.logging.level" value="DEBUG"/>
+  <set-property name="domino.slf4j.logging.showCaller" value="true"/>
+  <set-property name="domino.slf4j.logging.showMdc" value="true"/>
+</module>
+```
+
+`showCaller` prepends source location information like `[MyClass:42]`. `showMdc` prepends the current MDC context when one is available.
 
 ## Advanced topics
 
-- Service/provider wiring
-    - The library provides the SLF4J service provider and logger factory for a GWT/JS environment. In typical usage, you don’t need to configure SLF4J service discovery manually.
+### Service provider wiring
 
-- Startup order
-    - If you rely on specific routing, register your adapters early in application startup, before emitting log events.
+The library ships a default SLF4J service provider for GWT/J2CL environments. In normal use, you just inherit the GWT module and start logging. You do not need to wire `META-INF/services` by hand.
 
-- Marker hierarchies
-    - When no direct adapter mapping exists for a marker, referenced markers are traversed to find the first mapped adapter. If none is found, the default adapter (if any) is used.
+If you need custom behavior, extend `DefaultDominoLoggingServiceProvider` and install your provider early in application startup, before the first `LoggerFactory`, `MarkerFactory`, or `MDC` access.
 
----
+### Marker factories
 
-## Best practices
+The bundled marker factory caches markers by name, so repeated `MarkerFactory.getMarker("PAYMENT")` calls return the same marker instance. Use `getDetachedMarker(...)` when you need a standalone marker that is not cached.
 
-- Define a small set of well-known markers (e.g., SECURITY, AUDIT, PAYMENT) and route them to purpose-built adapters.
-- Prefer scoped MDC with try-with-resources for predictable lifetimes.
-- In production, consider a custom adapter that batches and ships logs to your backend.
-- Be mindful of PII when logging to browser consoles or remote endpoints.
+### Startup order
 
----
+Routing is global state. Register adapters during bootstrap, before the first log event, if you want marker-specific routing to apply consistently.
+
+If you reconfigure logging in tests or hot-reload flows, clear router state and MDC state explicitly so one run does not leak into the next.
+
+### Marker hierarchies
+
+The router searches the marker itself first, then walks referenced markers recursively, and finally falls back to the default adapter. That makes marker hierarchies useful for broad categories:
+
+- `payment.add(online)` lets `PAYMENT` events reuse the `ONLINE` route if `PAYMENT` has no direct adapter
+- a direct mapping still overrides any referenced markers
 
 ## Troubleshooting
 
-- Logs not appearing
-    - Ensure your GWT module inherits the logging module
-    - Verify a default adapter is set if no marker mapping applies
-    - Confirm your adapter implementation isn’t swallowing errors
+- No output: confirm the GWT module inherits `org.dominokit.domino.logger.Logging` and that your level property is not set to `OFF`.
+- Wrong adapter: verify the marker name matches the registered route and that the route is installed before the first log call.
+- Missing MDC data: make sure the log call happens inside the scope returned by `MDCUtils.withMdc(...)`.
 
-- Marker routing not applied
-    - Check that the marker name used in code matches the name you registered
-    - If using marker references, ensure the referenced markers are correctly wired
+## Best practices
 
-- MDC not visible
-    - Make sure your adapter uses the MDC snapshot provided to it (if you need to transmit MDC values)
-
----
-
-## Compatibility
-
-- Java 8
-- Intended for GWT/JS environments (including frameworks like DominoKit)
-- Uses the SLF4J API familiar to JVM developers, adapted for browser-based execution
-
----
-
-## License
-
-This project is licensed under the terms of the included LICENSE file.
-
----
-
-## Contributing
-
-Issues and pull requests are welcome. Please include:
-- Clear description of the problem or feature
-- Repro steps or sample
-- Any environment details that may affect logging behavior
-
----
-
-## API reference (at a glance)
-
-- SLF4J surface:
-    - Logger, LoggerFactory, Marker, MarkerFactory, event.Level, MDC
-
-- Routing:
-    - LoggingRouter: setDefaultAdapter, register, unregister, clear
-
-- Adapter SPI:
-    - LoggingAdapter: log(level, loggerName, marker, message, throwable, mdc)
-
-- MDC helpers:
-    - MDCUtils: withMdc(key, value), withMdc(map), getMdcStack(key)
+- Keep the marker set small and stable, for example `SECURITY`, `AUDIT`, and `PAYMENT`.
+- Use scoped MDC for correlation IDs and similar request context.
+- Use `CompositeLoggingAdapter` when you want the same event in both the console and a backend.
+- Avoid logging sensitive data to the browser console.
+- Reset router and MDC state in tests when you change them.
