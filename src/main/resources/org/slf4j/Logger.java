@@ -18,6 +18,11 @@
  */
 package org.slf4j;
 
+import org.slf4j.Marker;
+import org.slf4j.event.Level;
+import org.slf4j.helpers.SimpleLoggingEventBuilder;
+import org.slf4j.spi.LoggingEventBuilder;
+
 /**
  * The Logger interface is the main user entry point of SLF4J API. It is expected that logging takes
  * place through concrete implementations of this interface.
@@ -72,6 +77,31 @@ public interface Logger {
    * @return name of this logger instance
    */
   public String getName();
+
+  // SLF4J 2.x convenience event builder methods (default no-op implementations for GWT/J2CL)
+  public default LoggingEventBuilder atTrace() {
+    return new SimpleLoggingEventBuilder(this, Level.TRACE);
+  }
+
+  public default LoggingEventBuilder atDebug() {
+    return new SimpleLoggingEventBuilder(this, Level.DEBUG);
+  }
+
+  public default LoggingEventBuilder atInfo() {
+    return new SimpleLoggingEventBuilder(this, Level.INFO);
+  }
+
+  public default LoggingEventBuilder atWarn() {
+    return new SimpleLoggingEventBuilder(this, Level.WARN);
+  }
+
+  public default LoggingEventBuilder atError() {
+    return new SimpleLoggingEventBuilder(this, Level.ERROR);
+  }
+
+  public default LoggingEventBuilder atLevel(Level level) {
+    return new SimpleLoggingEventBuilder(this, level);
+  }
 
   /**
    * Is the logger instance enabled for the TRACE level?
@@ -152,7 +182,7 @@ public interface Logger {
    * @return True if this Logger is enabled for the TRACE level, false otherwise.
    * @since 1.4
    */
-  public boolean isTraceEnabled(org.slf4j.Marker marker);
+  public boolean isTraceEnabled(Marker marker);
 
   /**
    * Log a message with the specific Marker at the TRACE level.
@@ -161,7 +191,7 @@ public interface Logger {
    * @param msg the message string to be logged
    * @since 1.4
    */
-  public void trace(org.slf4j.Marker marker, String msg);
+  public void trace(Marker marker, String msg);
 
   /**
    * This method is similar to {@link #trace(String, Object)} method except that the marker data is
@@ -172,7 +202,7 @@ public interface Logger {
    * @param arg the argument
    * @since 1.4
    */
-  public void trace(org.slf4j.Marker marker, String format, Object arg);
+  public void trace(Marker marker, String format, Object arg);
 
   /**
    * This method is similar to {@link #trace(String, Object, Object)} method except that the marker
@@ -184,7 +214,7 @@ public interface Logger {
    * @param arg2 the second argument
    * @since 1.4
    */
-  public void trace(org.slf4j.Marker marker, String format, Object arg1, Object arg2);
+  public void trace(Marker marker, String format, Object arg1, Object arg2);
 
   /**
    * This method is similar to {@link #trace(String, Object...)} method except that the marker data
@@ -195,7 +225,7 @@ public interface Logger {
    * @param argArray an array of arguments
    * @since 1.4
    */
-  public void trace(org.slf4j.Marker marker, String format, Object... argArray);
+  public void trace(Marker marker, String format, Object... argArray);
 
   /**
    * This method is similar to {@link #trace(String, Throwable)} method except that the marker data
@@ -206,7 +236,7 @@ public interface Logger {
    * @param t the exception (throwable) to log
    * @since 1.4
    */
-  public void trace(org.slf4j.Marker marker, String msg, Throwable t);
+  public void trace(Marker marker, String msg, Throwable t);
 
   /**
    * Is the logger instance enabled for the DEBUG level?
@@ -280,7 +310,7 @@ public interface Logger {
    * @param marker The marker data to take into consideration
    * @return True if this Logger is enabled for the DEBUG level, false otherwise.
    */
-  public boolean isDebugEnabled(org.slf4j.Marker marker);
+  public boolean isDebugEnabled(Marker marker);
 
   /**
    * Log a message with the specific Marker at the DEBUG level.
@@ -288,7 +318,7 @@ public interface Logger {
    * @param marker the marker data specific to this log statement
    * @param msg the message string to be logged
    */
-  public void debug(org.slf4j.Marker marker, String msg);
+  public void debug(Marker marker, String msg);
 
   /**
    * This method is similar to {@link #debug(String, Object)} method except that the marker data is
@@ -298,7 +328,7 @@ public interface Logger {
    * @param format the format string
    * @param arg the argument
    */
-  public void debug(org.slf4j.Marker marker, String format, Object arg);
+  public void debug(Marker marker, String format, Object arg);
 
   /**
    * This method is similar to {@link #debug(String, Object, Object)} method except that the marker
@@ -309,7 +339,7 @@ public interface Logger {
    * @param arg1 the first argument
    * @param arg2 the second argument
    */
-  public void debug(org.slf4j.Marker marker, String format, Object arg1, Object arg2);
+  public void debug(Marker marker, String format, Object arg1, Object arg2);
 
   /**
    * This method is similar to {@link #debug(String, Object...)} method except that the marker data
@@ -319,7 +349,7 @@ public interface Logger {
    * @param format the format string
    * @param arguments a list of 3 or more arguments
    */
-  public void debug(org.slf4j.Marker marker, String format, Object... arguments);
+  public void debug(Marker marker, String format, Object... arguments);
 
   /**
    * This method is similar to {@link #debug(String, Throwable)} method except that the marker data
@@ -329,7 +359,7 @@ public interface Logger {
    * @param msg the message accompanying the exception
    * @param t the exception (throwable) to log
    */
-  public void debug(org.slf4j.Marker marker, String msg, Throwable t);
+  public void debug(Marker marker, String msg, Throwable t);
 
   /**
    * Is the logger instance enabled for the INFO level?
@@ -401,7 +431,7 @@ public interface Logger {
    * @param marker The marker data to take into consideration
    * @return true if this logger is warn enabled, false otherwise
    */
-  public boolean isInfoEnabled(org.slf4j.Marker marker);
+  public boolean isInfoEnabled(Marker marker);
 
   /**
    * Log a message with the specific Marker at the INFO level.
@@ -409,7 +439,7 @@ public interface Logger {
    * @param marker The marker specific to this log statement
    * @param msg the message string to be logged
    */
-  public void info(org.slf4j.Marker marker, String msg);
+  public void info(Marker marker, String msg);
 
   /**
    * This method is similar to {@link #info(String, Object)} method except that the marker data is
@@ -419,7 +449,7 @@ public interface Logger {
    * @param format the format string
    * @param arg the argument
    */
-  public void info(org.slf4j.Marker marker, String format, Object arg);
+  public void info(Marker marker, String format, Object arg);
 
   /**
    * This method is similar to {@link #info(String, Object, Object)} method except that the marker
@@ -430,7 +460,7 @@ public interface Logger {
    * @param arg1 the first argument
    * @param arg2 the second argument
    */
-  public void info(org.slf4j.Marker marker, String format, Object arg1, Object arg2);
+  public void info(Marker marker, String format, Object arg1, Object arg2);
 
   /**
    * This method is similar to {@link #info(String, Object...)} method except that the marker data
@@ -440,7 +470,7 @@ public interface Logger {
    * @param format the format string
    * @param arguments a list of 3 or more arguments
    */
-  public void info(org.slf4j.Marker marker, String format, Object... arguments);
+  public void info(Marker marker, String format, Object... arguments);
 
   /**
    * This method is similar to {@link #info(String, Throwable)} method except that the marker data
@@ -450,7 +480,7 @@ public interface Logger {
    * @param msg the message accompanying the exception
    * @param t the exception (throwable) to log
    */
-  public void info(org.slf4j.Marker marker, String msg, Throwable t);
+  public void info(Marker marker, String msg, Throwable t);
 
   /**
    * Is the logger instance enabled for the WARN level?
@@ -522,7 +552,7 @@ public interface Logger {
    * @param marker The marker data to take into consideration
    * @return True if this Logger is enabled for the WARN level, false otherwise.
    */
-  public boolean isWarnEnabled(org.slf4j.Marker marker);
+  public boolean isWarnEnabled(Marker marker);
 
   /**
    * Log a message with the specific Marker at the WARN level.
@@ -530,7 +560,7 @@ public interface Logger {
    * @param marker The marker specific to this log statement
    * @param msg the message string to be logged
    */
-  public void warn(org.slf4j.Marker marker, String msg);
+  public void warn(Marker marker, String msg);
 
   /**
    * This method is similar to {@link #warn(String, Object)} method except that the marker data is
@@ -540,7 +570,7 @@ public interface Logger {
    * @param format the format string
    * @param arg the argument
    */
-  public void warn(org.slf4j.Marker marker, String format, Object arg);
+  public void warn(Marker marker, String format, Object arg);
 
   /**
    * This method is similar to {@link #warn(String, Object, Object)} method except that the marker
@@ -551,7 +581,7 @@ public interface Logger {
    * @param arg1 the first argument
    * @param arg2 the second argument
    */
-  public void warn(org.slf4j.Marker marker, String format, Object arg1, Object arg2);
+  public void warn(Marker marker, String format, Object arg1, Object arg2);
 
   /**
    * This method is similar to {@link #warn(String, Object...)} method except that the marker data
@@ -561,7 +591,7 @@ public interface Logger {
    * @param format the format string
    * @param arguments a list of 3 or more arguments
    */
-  public void warn(org.slf4j.Marker marker, String format, Object... arguments);
+  public void warn(Marker marker, String format, Object... arguments);
 
   /**
    * This method is similar to {@link #warn(String, Throwable)} method except that the marker data
@@ -571,7 +601,7 @@ public interface Logger {
    * @param msg the message accompanying the exception
    * @param t the exception (throwable) to log
    */
-  public void warn(org.slf4j.Marker marker, String msg, Throwable t);
+  public void warn(Marker marker, String msg, Throwable t);
 
   /**
    * Is the logger instance enabled for the ERROR level?
@@ -645,7 +675,7 @@ public interface Logger {
    * @param marker The marker data to take into consideration
    * @return True if this Logger is enabled for the ERROR level, false otherwise.
    */
-  public boolean isErrorEnabled(org.slf4j.Marker marker);
+  public boolean isErrorEnabled(Marker marker);
 
   /**
    * Log a message with the specific Marker at the ERROR level.
@@ -653,7 +683,7 @@ public interface Logger {
    * @param marker The marker specific to this log statement
    * @param msg the message string to be logged
    */
-  public void error(org.slf4j.Marker marker, String msg);
+  public void error(Marker marker, String msg);
 
   /**
    * This method is similar to {@link #error(String, Object)} method except that the marker data is
@@ -663,7 +693,7 @@ public interface Logger {
    * @param format the format string
    * @param arg the argument
    */
-  public void error(org.slf4j.Marker marker, String format, Object arg);
+  public void error(Marker marker, String format, Object arg);
 
   /**
    * This method is similar to {@link #error(String, Object, Object)} method except that the marker
@@ -674,7 +704,7 @@ public interface Logger {
    * @param arg1 the first argument
    * @param arg2 the second argument
    */
-  public void error(org.slf4j.Marker marker, String format, Object arg1, Object arg2);
+  public void error(Marker marker, String format, Object arg1, Object arg2);
 
   /**
    * This method is similar to {@link #error(String, Object...)} method except that the marker data
@@ -684,7 +714,7 @@ public interface Logger {
    * @param format the format string
    * @param arguments a list of 3 or more arguments
    */
-  public void error(org.slf4j.Marker marker, String format, Object... arguments);
+  public void error(Marker marker, String format, Object... arguments);
 
   /**
    * This method is similar to {@link #error(String, Throwable)} method except that the marker data
@@ -694,5 +724,5 @@ public interface Logger {
    * @param msg the message accompanying the exception
    * @param t the exception (throwable) to log
    */
-  public void error(org.slf4j.Marker marker, String msg, Throwable t);
+  public void error(Marker marker, String msg, Throwable t);
 }

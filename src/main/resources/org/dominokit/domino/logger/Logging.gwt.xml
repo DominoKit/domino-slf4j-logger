@@ -21,7 +21,11 @@
     <inherits name="elemental2.dom.Dom"/>
 
     <define-property name="domino.slf4j.logging.level" values="INFO,WARN,DEBUG,TRACE,ERROR,OFF"/>
+    <define-property name="domino.slf4j.logging.showCaller" values="true,false"/>
+    <define-property name="domino.slf4j.logging.showMdc" values="true,false"/>
     <set-property name="domino.slf4j.logging.level" value="INFO"/>
+    <set-property name="domino.slf4j.logging.showCaller" value="false"/>
+    <set-property name="domino.slf4j.logging.showMdc" value="false"/>
 
     <source path=""/>
 

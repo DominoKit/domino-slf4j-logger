@@ -18,7 +18,16 @@
  */
 package org.slf4j;
 
-import org.dominokit.domino.logger.ConsoleLoggerAdapter;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.HashSet;
+import java.util.Set;
+
+import org.dominokit.domino.logger.DefaultDominoLoggingServiceProvider;
+import org.dominokit.domino.logger.DominoLoggingAdapter;
+import org.slf4j.spi.MDCAdapter;
+import org.slf4j.spi.SLF4JServiceProvider;
 
 /**
  * <code>LoggerFactory</code> is essentially a wrapper around an {@link ILoggerFactory} instance
@@ -34,20 +43,49 @@ import org.dominokit.domino.logger.ConsoleLoggerAdapter;
 public class LoggerFactory {
   private LoggerFactory() {}
 
+  // SLF4J 2.x SPI provider used by this super-sourced API
+  private static volatile SLF4JServiceProvider PROVIDER = new DefaultDominoLoggingServiceProvider();
+
   /**
-   * Return a logger named according to the name parameter using the statically bound {@link
+   * Allow applications/libraries to plug an SLF4JServiceProvider in GWT/J2CL environments.
+   *
+   * @param provider the SLF4J service provider to set
+   * @throws IllegalArgumentException if provider is null
+   */
+  public static void setProvider(SLF4JServiceProvider provider) {
+    if (provider == null) throw new IllegalArgumentException("provider == null");
+    PROVIDER = provider;
+    try {
+      provider.initialize();
+    } catch (Throwable ignore) {
+      // ignore init errors in minimal environment
+    }
+  }
+
+  /**
+   * Returns the currently configured SLF4J service provider.
+   *
+   * @return the active provider
+   */
+  public static SLF4JServiceProvider getProvider() {
+    return PROVIDER;
+  }
+
+
+  /**
+   * Return a logger named according to the name parameter using the bound provider's {@link
    * ILoggerFactory} instance.
    *
    * @param name The name of the logger.
    * @return logger
    */
   public static Logger getLogger(String name) {
-    return new ConsoleLoggerAdapter(name);
+    return PROVIDER.getLoggerFactory().getLogger(name);
   }
 
   /**
-   * Return a logger named corresponding to the class passed as parameter, using the statically
-   * bound {@link ILoggerFactory} instance.
+   * Return a logger named corresponding to the class passed as parameter, using the bound provider's
+   * {@link ILoggerFactory} instance.
    *
    * @param clazz the returned logger will be named after clazz
    * @return logger
