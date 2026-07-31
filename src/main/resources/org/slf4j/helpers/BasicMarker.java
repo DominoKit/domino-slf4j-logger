@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.slf4j.Marker
+import org.slf4j.Marker;
 
 /**
  * A simple implementation of the {@link Marker} interface.
