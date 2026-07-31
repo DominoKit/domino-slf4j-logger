@@ -1,3 +1,7 @@
+package org.slf4j.spi;
+
+import org.slf4j.Marker;
+
 /**
  * Minimal SLF4J 2.x-compatible LoggingEventBuilder for GWT/J2CL super-sourcing.
  */

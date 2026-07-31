@@ -1,3 +1,4 @@
+package org.slf4j;
 /**
  * Minimal IMarkerFactory for GWT/J2CL super-sourcing.
  */

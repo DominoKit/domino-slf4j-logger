@@ -1,3 +1,8 @@
+package org.slf4j.spi;
+
+import org.slf4j.ILoggerFactory;
+import org.slf4j.IMarkerFactory;
+
 /**
  * Minimal SLF4JServiceProvider for GWT/J2CL super-sourcing.
  *

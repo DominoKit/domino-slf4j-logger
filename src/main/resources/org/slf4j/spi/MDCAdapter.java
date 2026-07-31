@@ -1,3 +1,8 @@
+package org.slf4j.spi;
+
+import java.util.Deque;
+import java.util.Map;
+
 /**
  * Minimal MDCAdapter for GWT/J2CL super-sourcing with stack operations.
  */
